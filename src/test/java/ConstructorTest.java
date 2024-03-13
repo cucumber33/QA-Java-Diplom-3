@@ -2,7 +2,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class ConstructorTest extends Temp {
+public class ConstructorTest extends PrepareTest {
     @Test
     public void checkSaucesPass() {
         mainPage.clickOnSaucesMenu();

@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import page.object.MainPage;
 
-public class Temp {
+public class PrepareTest {
     protected WebDriver driver;
     protected MainPage mainPage;
 
