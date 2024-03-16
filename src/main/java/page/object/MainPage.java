@@ -1,9 +1,14 @@
 package page.object;
 
+import io.qameta.allure.Step;
+import org.example.Endpoints;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class MainPage {
 
@@ -14,50 +19,51 @@ public class MainPage {
     private final By menuBuns = By.xpath(".//span[text()='Булки']/..");
     private final By menuSauces = By.xpath(".//span[text()='Соусы']/..");
     private final By menuFillings = By.xpath(".//span[text()='Начинки']/..");
-    private WebDriver driver;
 
-    public MainPage(WebDriver driver, int i) {
-        this.driver = driver;
+    protected final WebDriver webDriver;
+
+    public MainPage(WebDriver webDriver) {
+        this.webDriver = webDriver;
     }
 
     public void waitingForMainPageLoading() {
-        new WebDriverWait(driver, 5)
+        new WebDriverWait(webDriver, Duration.ofSeconds(5))
                 .until(ExpectedConditions.visibilityOfElementLocated(burgerAssembleTitle));
     }
 
     public boolean orderPlaceButtonIsDisplayed() {
-        return driver.findElement(orderPlaceButton).isDisplayed();
+        return webDriver.findElement(orderPlaceButton).isDisplayed();
     }
 
     public void clickOnProfileEnterButton() {
-        driver.findElement(profileEnterButton).click();
+        webDriver.findElement(profileEnterButton).click();
     }
 
     public void clickOnAccountEnterButton() {
-        driver.findElement(accountEnterButton).click();
+        webDriver.findElement(accountEnterButton).click();
     }
 
     public void clickOnBunsMenu() {
-        driver.findElement(menuBuns).click();
+        webDriver.findElement(menuBuns).click();
     }
 
     public void clickOnSaucesMenu() {
-        driver.findElement(menuSauces).click();
+        webDriver.findElement(menuSauces).click();
     }
 
     public void clickOnFillingsMenu() {
-        driver.findElement(menuFillings).click();
+        webDriver.findElement(menuFillings).click();
     }
 
     public boolean bunsMenuIsSelected() {
-        return driver.findElement(menuBuns).getAttribute("class").contains("current");
+        return webDriver.findElement(menuBuns).getAttribute("class").contains("current");
     }
 
     public boolean saucesMenuIsSelected() {
-        return driver.findElement(menuSauces).getAttribute("class").contains("current");
+        return webDriver.findElement(menuSauces).getAttribute("class").contains("current");
     }
 
     public boolean fillingsMenuIsSelected() {
-        return driver.findElement(menuFillings).getAttribute("class").contains("current");
+        return webDriver.findElement(menuFillings).getAttribute("class").contains("current");
     }
 }

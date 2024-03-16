@@ -1,25 +1,27 @@
-import org.example.Endpoints;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.rules.ExternalResource;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import page.object.MainPage;
+import org.example.Drivers;
 
-public class PrepareTest {
-    protected WebDriver driver;
-    protected MainPage mainPage;
+import java.time.Duration;
 
-    @Before
-    public void setUp() {
-        driver = new ChromeDriver();
-        driver.get(Endpoints.BASE_URL);
-        mainPage = new MainPage(driver, 10);
+
+public class PrepareTest extends ExternalResource {
+    private WebDriver webDriver;
+    // чтобы запустить тесты в MozillaFirefox, нужно поменять "chrome" на "firefox"
+    String property = System.getProperty("browser", "chrome");
+
+    @Override
+    protected void before() {
+        webDriver = Drivers.getDriver(property.toLowerCase());
+        webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+    public WebDriver getWebDriver() {
+        return webDriver;
+    }
+
+    @Override
+    protected void after() {
+        webDriver.quit();
     }
 }

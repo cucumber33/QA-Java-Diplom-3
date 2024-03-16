@@ -2,7 +2,6 @@ package org.example;
 
 public class Endpoints {
     public final static String BASE_URL = "https://stellarburgers.nomoreparties.site";
-    public final static String YANDEX_DRIVER = "src/main/resources/yandexdriver.exe";
     public final static String REGISTER = "/register";
     public final static String LOGIN = "/login";
     public final static String FORGOT_PASS = "/forgot-password";

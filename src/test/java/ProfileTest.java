@@ -1,7 +1,6 @@
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.openqa.selenium.chrome.ChromeDriver;
 import user.*;
 import page.object.*;
 import org.example.*;
@@ -14,31 +13,25 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class ProfileTest {
-
+    @Rule
+    public PrepareTest prepareTest = new PrepareTest();
+    public MainPage mainPage;
     public static String accessToken, refreshToken;
     public static User user;
-    public WebDriver driver;
+    public WebDriver webDriver;
     public Profile personalProfilePage;
-    public MainPage mainPage;
     public Login loginPage;
 
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
-        mainPage = new MainPage(driver, 10);
-        loginPage = new Login(driver);
-        personalProfilePage = new Profile(driver);
-        driver.get(Endpoints.BASE_URL);
-        LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
+        webDriver = prepareTest.getWebDriver();
+        mainPage = new MainPage(webDriver);
+        loginPage = new Login(webDriver);
+        personalProfilePage = new Profile(webDriver);
+        webDriver.get(Endpoints.BASE_URL);
+        LocalStorage localStorage = ((WebStorage) webDriver).getLocalStorage();
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-    }
-
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
     }
 
     @BeforeClass
@@ -58,33 +51,33 @@ public class ProfileTest {
     @Test
     @DisplayName("Проверка выхода из профиля по кнопке 'Выход' в личном кабинете пользователя")
     public void checkProfileExitButton() {
-        driver.get(Endpoints.BASE_URL + "/account");
+        webDriver.get(Endpoints.BASE_URL + "/account");
         personalProfilePage.waitingForProfilePageLoading();
         personalProfilePage.menuItemExitButtonClick();
         loginPage.waitingForLoginFormLoading();
-        LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
+        LocalStorage localStorage = ((WebStorage) webDriver).getLocalStorage();
         assertNull("Токен пользователя пустой", localStorage.getItem("accessToken"));
-        assertEquals("Зашли на страницу логина после выхода", Endpoints.BASE_URL + Endpoints.LOGIN, driver.getCurrentUrl());
+        assertEquals("Зашли на страницу логина после выхода", Endpoints.BASE_URL + Endpoints.LOGIN, webDriver.getCurrentUrl());
     }
 
     @Test
     @DisplayName("Проверка перехода на главную страницу после авторизации пользователя")
     public void checkTransitionToMainPageAfterUserLoggedIn() {
-        driver.get(Endpoints.BASE_URL + "/account");
+        webDriver.get(Endpoints.BASE_URL + "/account");
         personalProfilePage.waitingForProfilePageLoading();
         personalProfilePage.stellarBurgerLogotypeClick();
         mainPage.waitingForMainPageLoading();
-        assertEquals("Перешли на главную страницу после авторизации", Endpoints.BASE_URL + "/", driver.getCurrentUrl());
+        assertEquals("Перешли на главную страницу после авторизации", Endpoints.BASE_URL + "/", webDriver.getCurrentUrl());
     }
 
     @Test
     @DisplayName("Переход на главную страницу из личного кабинета по кнопке с логотипом в шапке")
     public void checkTransitionFromProfileByClickOnLogoButton() {
-        driver.get(Endpoints.BASE_URL + "/account");
+        webDriver.get(Endpoints.BASE_URL + "/account");
         personalProfilePage.waitingForProfilePageLoading();
         personalProfilePage.headerConstructorButtonClick();
         mainPage.waitingForMainPageLoading();
-        assertEquals("Перешли на главную страницу после нажатия на логотип", Endpoints.BASE_URL + "/", driver.getCurrentUrl());
+        assertEquals("Перешли на главную страницу после нажатия на логотип", Endpoints.BASE_URL + "/", webDriver.getCurrentUrl());
     }
 
     @Test
@@ -93,6 +86,6 @@ public class ProfileTest {
         mainPage.waitingForMainPageLoading();
         mainPage.clickOnProfileEnterButton();
         personalProfilePage.waitingForProfilePageLoading();
-        assertEquals("Перешли в личный кабинет после нажатия кнопки 'Личный Кабинет' на главной странице", Endpoints.BASE_URL + Endpoints.PROFILE, driver.getCurrentUrl());
+        assertEquals("Перешли в личный кабинет после нажатия кнопки 'Личный Кабинет' на главной странице", Endpoints.BASE_URL + Endpoints.PROFILE, webDriver.getCurrentUrl());
     }
 }

@@ -6,31 +6,33 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+
 public class Login {
     private final By emailInputBox = By.xpath(".//label[text()='Email']/..//input");
     private final By passwordInputBox = By.xpath(".//label[text()='Пароль']/..//input");
     private final By loginButton = By.xpath(".//button[text()='Войти']");
     private final By loginFormTitle = By.xpath(".//*[text() = 'Вход']");
-    private final WebDriver driver;
+    protected final WebDriver webDriver;
 
-    public Login(WebDriver driver) {
-        this.driver = driver;
+    public Login(WebDriver webDriver) {
+        this.webDriver = webDriver;
     }
 
     public void waitingForLoginFormLoading() {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(loginFormTitle));
+        new WebDriverWait(webDriver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOfElementLocated(loginFormTitle));
     }
 
     public void insertPassword(String password) {
-        driver.findElement(passwordInputBox).sendKeys(password);
+        webDriver.findElement(passwordInputBox).sendKeys(password);
     }
 
     public void insertEmail(String email) {
-        driver.findElement(emailInputBox).sendKeys(email);
+        webDriver.findElement(emailInputBox).sendKeys(email);
     }
 
     public void loginButtonClick() {
-        driver.findElement(loginButton).click();
+        webDriver.findElement(loginButton).click();
     }
 
     public void insertUserDataAndClickLoginButton(User user) {
